@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Posts from './Posts'
+import  Post from './Post'
+import { useState, useEffect } from 'react';
+const url = ('https://jsonplaceholder.typicode.com/posts/1')
+
+
 
 function App() {
+  const [posts, setPosts] = useState("")
+  const[post, setPost] = useState("")
+
+
+  const fetchPosts = async () => {
+    try{
+    const response = await fetch(url)
+    const posts = await response.json()
+    setPosts(posts)
+    setPost(posts)
+  } catch (error) {
+    console.log(error)
+  }
+  }
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Posts posts={posts} />
+      <Post key={post.id} {...post} />
+
     </div>
   );
 }
